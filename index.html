@@ -1201,7 +1201,7 @@ function lockAndMark(correct) {
   } else {
     quizWrong += 1;
     quizStreak = 0;
-    toast("오답");
+    toast(`오답 · 정답: ${q ? q.value : ""}`);
     const k=keyOf(q.section,q.key,q.value);
     if(!wrong.includes(k)) wrong.push(k);
     localStorage.setItem(LS.wrong, JSON.stringify(wrong));
@@ -1225,6 +1225,11 @@ function chooseMC(i, options) {
     b.disabled=true;
   });
   lockAndMark(correct);
+  // AUTO_NEXT: 정답이면 자동으로 다음 문제
+  if(correct){
+    setTimeout(()=>{ resetAnswerStyle(); newQuestion(); }, 450);
+  }
+
 }
 
 function submitTyping() {
@@ -1243,6 +1248,11 @@ function submitTyping() {
     toast(`정답: ${target}`);
   }
   lockAndMark(correct);
+  // AUTO_NEXT: 정답이면 자동으로 다음 문제
+  if(correct){
+    setTimeout(()=>{ resetAnswerStyle(); newQuestion(); }, 450);
+  }
+
 }
 
 /* UI events */
