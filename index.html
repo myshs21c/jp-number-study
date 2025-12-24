@@ -6,6 +6,22 @@
 <title>일본어 숫자 스터디</title>
 
 
+
+
+  <meta name="theme-color" content="#0B4CCB">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="일본어 숫자">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- iOS/Browser icons -->
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="icon-120.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <meta name="theme-color" content="#16a34a"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -440,9 +456,77 @@
   }
   .ico { font-size: 16px; line-height: 1; }
 
+
+  /* App-like splash (Fuji) */
+  .splash{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(1200px 700px at 50% 10%, rgba(255,255,255,.18), rgba(255,255,255,0)) ,
+                linear-gradient(180deg, #0B4CCB 0%, #1B73FF 100%);
+    transition: opacity .28s ease, transform .28s ease;
+  }
+  .splash.hide{
+    opacity:0;
+    transform: scale(1.02);
+    pointer-events:none;
+  }
+  .splashCard{
+    width:min(420px, 86vw);
+    border-radius: 28px;
+    padding: 22px;
+    text-align:center;
+    color: rgba(255,255,255,.94);
+  }
+  .splashIcon{
+    width: 96px; height: 96px;
+    border-radius: 24px;
+    overflow:hidden;
+    margin: 0 auto 14px;
+    box-shadow: 0 16px 34px rgba(0,0,0,.18);
+    border: 1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.08);
+  }
+  .splashIcon img{ width:100%; height:100%; display:block; }
+  .splashTitle{ font-size: 18px; font-weight: 950; letter-spacing: .2px; }
+  .splashSub{ margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,.85); }
+  .splashBar{
+    margin-top: 16px;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.20);
+    overflow:hidden;
+  }
+  .splashBar > div{
+    height:100%;
+    width: 28%;
+    border-radius: 999px;
+    background: rgba(255,255,255,.90);
+    animation: splashMove 1.05s ease-in-out infinite;
+  }
+  @keyframes splashMove{
+    0%{ transform: translateX(-60%); width: 26%; }
+    50%{ transform: translateX(180%); width: 36%; }
+    100%{ transform: translateX(-60%); width: 26%; }
+  }
+
 </style>
 </head>
 <body>
+
+<div class="splash" id="splash">
+  <div class="splashCard">
+    <div class="splashIcon"><img src="icon-180.png" alt="일본어 숫자 아이콘"></div>
+    <div class="splashTitle">일본어 숫자</div>
+    <div class="splashSub">카드로 익히고 · 퀴즈로 확인</div>
+    <div class="splashBar"><div></div></div>
+  </div>
+</div>
+
+
 <div class="container">
   <div class="topbar">
     <div class="topbar-inner">
@@ -1487,6 +1571,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
   });
   updateTabs();
 });
+
+
+
+// Splash (failsafe): never block UI
+(function(){
+  const splash = document.getElementById("splash");
+  if(!splash) return;
+  const hide = ()=>{
+    if(splash.classList.contains("hide")) return;
+    splash.classList.add("hide");
+    setTimeout(()=>{ splash.style.display="none"; }, 320);
+  };
+  window.addEventListener("load", ()=>setTimeout(hide, 520), {once:true});
+  window.addEventListener("pageshow", ()=>setTimeout(hide, 520), {once:true});
+  document.addEventListener("DOMContentLoaded", ()=>setTimeout(hide, 650), {once:true});
+  setTimeout(hide, 1400);
+  splash.addEventListener("click", hide);
+})();
 
 
 /* Init */

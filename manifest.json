@@ -1,0 +1,20 @@
+{
+  "name": "일본어 숫자",
+  "short_name": "일본어 숫자",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0B4CCB",
+  "theme_color": "#0B4CCB",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
